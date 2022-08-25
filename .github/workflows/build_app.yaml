@@ -25,6 +25,11 @@ on:
         type: string
         default: "."
 
+      docker_file:
+        required: false
+        type: string
+        default: "Dockerfile"
+
       tags:
         description: "Multiline string with newline element separation"
         required: true
@@ -52,6 +57,11 @@ on:
       DEPLOYMENT_NAME:
         type: string
         required: true
+
+      deploy:
+        required: false
+        type: boolean
+        default: true
 
 jobs:
   checkout_build__and_build_app:
@@ -98,6 +108,7 @@ jobs:
       - name: Build and Push
         uses: docker/build-push-action@v3
         with:
+          file: ${{ inputs.docker_file }}
           context: ${{ inputs.build_context}}
           push: ${{ inputs.push_docker}}
           tags: ${{ steps.image-meta.outputs.tags }}
@@ -105,5 +116,6 @@ jobs:
 
       # Deploy the Docker image to the GKE cluster
       - name: Deploy
+        if: ${{ inputs.deploy }}
         run: |-
           kubectl rollout restart deployment/${{inputs.DEPLOYMENT_NAME}}
