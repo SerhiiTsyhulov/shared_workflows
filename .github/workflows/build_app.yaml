@@ -15,6 +15,17 @@ on:
         required: true
         type: string
 
+      push_docker:
+        required: false
+        type: boolean
+        default: true
+
+      build_context:
+        required: false
+        type: string
+        default: .
+
+
       tags:
         description: "Multiline string with newline element separation"
         required: true
@@ -87,8 +98,8 @@ jobs:
       - name: Build and Push
         uses: docker/build-push-action@v3
         with:
-          context: .
-          push: true
+          context: ${{ inputs.build_context}}
+          push: ${{ inputs.push_docker}}
           tags: ${{ steps.image-meta.outputs.tags }}
           build-args: ${{ inputs.BUILD_ARGS }}
 
