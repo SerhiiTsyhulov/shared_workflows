@@ -23,8 +23,7 @@ on:
       build_context:
         required: false
         type: string
-        default: .
-
+        default: "."
 
       tags:
         description: "Multiline string with newline element separation"
@@ -42,7 +41,8 @@ on:
 
       PROJECT_ID:
         type: string
-        required: true
+        required: false
+        default: "braided-tracker-275213"
 
       BUILD_ARGS:
         type: string
