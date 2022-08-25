@@ -90,6 +90,7 @@ jobs:
         uses: docker/setup-buildx-action@v2
 
       - name: Set up GKE credentials
+        if: ${{ inputs.deploy }}
         uses: google-github-actions/get-gke-credentials@v0
         with:
           cluster_name: ${{ inputs.GKE_CLUSTER }}
